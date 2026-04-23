@@ -3,14 +3,32 @@ import logger from "./utils/logger";
 import 'dotenv/config'
 import {DBconnection} from './db/db'
 import userRoutes from './routes/userRoutes'
-
+import cookieparser from 'cookie-parser'
+import {rateLimit} from 'express-rate-limit'
+import websiteRoutes from './routes/GenrateWebsiteRoutes'
 
 DBconnection()
 
 const app:Application = express()
 
+
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	limit: 100, 
+	standardHeaders: 'draft-8', 
+	legacyHeaders: false, 
+	ipv6Subnet: 56, 
+})
+
+app.use(limiter)
 app.use(express.json())
+app.use(cookieparser())
+
+
 app.use('/auth/user',userRoutes)
+app.use('/web',websiteRoutes)
+
 
 app.get("/",(req:Request,res:Response)=>{
     try {

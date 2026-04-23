@@ -20,6 +20,12 @@ const websiteSchema = new Schema({
   shopemail: { type: String },
   shoplinks: [{ link: String }],
   shopadress: { type: String },
+
+  phone: { type: String },
+  city: { type: String },
+  country: { type: String },
+  mapLocation: { type: String },
+  
   shophomepageimg: { type: String },
   shopProducts: [productSchema], // Reference the product schema
 });
@@ -35,7 +41,7 @@ const userSchema = new Schema<Usertype>(
       lowercase: true 
     },
     password: { type: String, required: true, select: false },
-    websites: [websiteSchema], // Reference the website schema
+    websitesbrands: [websiteSchema], 
   },
   { 
     timestamps: true // This automatically handles createdAt and updatedAt

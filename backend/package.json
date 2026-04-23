@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mongoose": "^5.11.96",
@@ -14,12 +15,16 @@
   "main": "index.js",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.4.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.5.0",
+    "prettier": "^3.8.3",
     "undici-types": "^7.19.2",
-    "winston": "^3.19.0"
+    "winston": "^3.19.0",
+    "zod": "^4.3.6"
   },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
