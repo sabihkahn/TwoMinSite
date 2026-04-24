@@ -1,5 +1,6 @@
  import { Schema, model } from "mongoose";
 import { Usertype } from "../types/userType"; // Import your interface
+import { string } from "zod";
 
 // 1. Nested Product Schema
 const productSchema = new Schema({
@@ -17,6 +18,7 @@ const websiteSchema = new Schema({
   shopname: { type: String, required: true },
   shopdescription: { type: String },
   shoplogo: { type: String },
+  myoders:[{name:string,phoneno:string,location:string,email:string,productid:string}],
   shopemail: { type: String },
   shoplinks: [{ link: String }],
   shopadress: { type: String },

@@ -4,7 +4,7 @@ import { CreateWebsiteSchema } from "../zodprotection/zodCreatewebsiteSchema";
 import Usermodel from "../models/usermodel";
 import mongoose from "mongoose";
 import { generateShopHtml } from '../utils/website/websiteshowed'
-import {ProductSchema} from '../zodprotection/zodcreateProduct'
+import { ProductSchema } from '../zodprotection/zodcreateProduct'
 interface Requestwithid extends Request {
   id?: any;
 }
@@ -58,7 +58,7 @@ export const CreateWebsite = async (req: Requestwithid, res: Response) => {
 
     return res.status(201).send({
       message: "Website created successfully",
-      
+
     });
 
   } catch (error) {
@@ -68,34 +68,26 @@ export const CreateWebsite = async (req: Requestwithid, res: Response) => {
 };
 
 
-
 export const getwebsite = async (req: Requestwithid, res: Response) => {
   try {
-    const { webname } = req.params
+    const { webname } = req.params;
+
     const userweb = await Usermodel.findOne(
       { "websitesbrands.shopname": webname },
       { "websitesbrands.$": 1 }
+    ).select("-myoders")
 
-    )
-    // next todo 
-
-    // done ==> ✔ set the auth for not having spaces and weird character in shopname or webname
-    // done ==> ✔ create a fuction which will return the htmlcode of string based on theme we can get from webname 
-    // 3:create add product route for the shop
-
-
-
-
-    if (!userweb) {
-      return res.status(400).send({ message: "website does't exist" })
-
+    if (!userweb || !userweb.websitesbrands.length) {
+      return res.status(400).send({ message: "Website doesn't exist" });
     }
 
-    let data = generateShopHtml(userweb)
-   
+    // Pass the brand object specifically to the generator
+    const brandData = userweb.websitesbrands[0];
+    const htmlData = generateShopHtml(brandData);
 
-    res.send(userweb)
-
+    // Send the actual HTML string
+    res.setHeader('Content-Type', 'text/html');
+    return res.send(htmlData);
 
   } catch (error) {
     logger.error("Error in gettingwebsite controller", error);
@@ -103,19 +95,18 @@ export const getwebsite = async (req: Requestwithid, res: Response) => {
   }
 }
 
-
 export const addProduct = async (req: Requestwithid, res: Response) => {
   try {
 
     const id = req.id?.id;
-    let { productdata, webname,webid } = req.body;
+    let { productdata, webname, webid } = req.body;
 
     const validationres = ProductSchema.safeParse(productdata)
-   
-    if(!validationres.success){
-      return res.status(400).send({message:validationres.error.flatten().fieldErrors})
+
+    if (!validationres.success) {
+      return res.status(400).send({ message: validationres.error.flatten().fieldErrors })
     }
-   
+
     const user = await Usermodel.findOneAndUpdate(
       {
         _id: id,
@@ -135,8 +126,8 @@ export const addProduct = async (req: Requestwithid, res: Response) => {
     }
 
 
-    res.status(200).send({message:"product created successfully",user,productdata,webname})
-    
+    res.status(200).send({ message: "product created successfully", user, productdata, webname })
+
 
   } catch (error) {
 
@@ -147,7 +138,173 @@ export const addProduct = async (req: Requestwithid, res: Response) => {
 }
 
 
+export const addreview = async (req: Requestwithid, res: Response) => {
+  try {
 
-//  todo  
-// fix get websitet problem like prodiuct shsould show
-// fix and clean code 
+    const { review, productId } = req.body
+
+    if (!review) {
+      res.status(400).send({ message: "review is not provided" })
+    }
+
+   const user = await Usermodel.findOneAndUpdate(
+  {
+    "websitesbrands.shopProducts._id": productId
+  },
+  {
+    $push: {
+      "websitesbrands.$[].shopProducts.$[product].reviews": review
+    }
+  },
+  {
+    arrayFilters: [
+      { "product._id": productId }
+    ],
+    returnDocument: "after"
+  }
+);
+res.status(200).send({message:"review added successfully"})
+  } catch (error) {
+    logger.error("an error occur in addreview controller ===> ", error)
+    res.status(500).send({ message: "Internal server error" })
+  }
+}
+
+
+
+export const purchaseproduct = async (req: Requestwithid, res: Response) => {
+  try {
+    const { name, phoneno, location, email, productId, webid } = req.body;
+
+    // basic validation
+    if (!name || !phoneno || !location || !email || !productId || !webid) {
+      return res.status(400).send({ message: "All fields are required" });
+    }
+
+    const order = {
+      name,
+      phoneno,
+      location,
+      email,
+      productid: productId
+    };
+
+    const user = await Usermodel.findOneAndUpdate(
+      {
+        "websitesbrands._id": webid
+      },
+      {
+        $push: {
+          "websitesbrands.$.myoders": order
+        }
+      },
+      {
+        returnDocument: "after"
+      }
+    );
+
+    if (!user) {
+      return res.status(404).send({ message: "Shop not found" });
+    }
+
+    res.status(200).send({
+      message: "Product purchased successfully, we will contact you soon"
+    });
+
+  } catch (error) {
+    logger.error("error in purchaseproduct ===> ", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+export const deleteproduct = async (req: Requestwithid, res: Response) => {
+  try {
+    const userId = req.id?.id; // from auth middleware
+    const { shopname, productid } = req.params;
+
+    if (!userId || !shopname || !productid) {
+      return res.status(400).send({ message: "Required data missing" });
+    }
+
+    const user = await Usermodel.findOneAndUpdate(
+      {
+        _id: userId,
+        "websitesbrands.shopname": shopname
+      },
+      {
+        $pull: {
+          "websitesbrands.$.shopProducts": { _id: productid }
+        }
+      },
+      { returnDocument: "after" }
+    );
+
+    if (!user) {
+      return res.status(404).send({ message: "Shop or product not found" });
+    }
+
+    res.status(200).send({ message: "Product deleted successfully" });
+
+  } catch (error) {
+    logger.error("deleteproduct error --> ", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+
+export const updateproduct = async (req: Requestwithid, res: Response) => {
+  try {
+    const userId = req.id?.id; // from auth
+    const { shopid, productid } = req.params;
+    const { productdata } = req.body;
+
+    if (!userId || !shopid || !productid || !productdata) {
+      return res.status(400).send({ message: "Missing required data" });
+    }
+
+    const user = await Usermodel.findOneAndUpdate(
+      {
+        _id: userId,
+        "websitesbrands._id": shopid,
+        "websitesbrands.shopProducts._id": productid
+      },
+      {
+        $set: {
+          "websitesbrands.$[shop].shopProducts.$[product].productname": productdata.productname,
+          "websitesbrands.$[shop].shopProducts.$[product].quantity": productdata.quantity,
+          "websitesbrands.$[shop].shopProducts.$[product].productdescription": productdata.productdescription,
+          "websitesbrands.$[shop].shopProducts.$[product].productmainphoto": productdata.productmainphoto,
+          "websitesbrands.$[shop].shopProducts.$[product].productextraphotos": productdata.productextraphotos
+        }
+      },
+      {
+        arrayFilters: [
+          { "shop._id": shopid },
+          { "product._id": productid }
+        ],
+        returnDocument: "after"
+      }
+    );
+
+    if (!user) {
+      return res.status(404).send({ message: "Product or shop not found" });
+    }
+
+    res.status(200).send({ message: "Product updated successfully" });
+
+  } catch (error) {
+    logger.error("updateproduct error --> ", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+
+// todo
+// 1: have to add route which will update the data of user
+//             exmaple delete website and update website
+// 2: add some profile auth dashbord and all data route 
+// 3: add update profile route 
+
+
+// add more theme move to frontend
+

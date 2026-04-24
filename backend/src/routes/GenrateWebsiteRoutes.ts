@@ -1,14 +1,24 @@
 import express, { Router } from 'express'
 import { Authorization } from '../middleware/Authorization'
-import { addProduct, CreateWebsite, getwebsite } from '../controller/Websitebuildcontroller'
+import { addProduct, addreview, CreateWebsite, deleteproduct, getwebsite, purchaseproduct, updateproduct } from '../controller/Websitebuildcontroller'
 
 
 const router: Router = express.Router()
 
 
 router.post('/createWebsite',Authorization,CreateWebsite)
+
 router.get('/mywebsite/:webname',getwebsite)
+
 router.post('/createproduct',Authorization,addProduct)
+
+router.post('/purchaseprodut',purchaseproduct)
+
+router.post('/review',addreview)
+
+router.delete('/deleteproduct/:shopname/:productid', Authorization, deleteproduct)
+
+router.put('/updateproduct/:shopid/:productid', Authorization, updateproduct)
 
 
 export default router

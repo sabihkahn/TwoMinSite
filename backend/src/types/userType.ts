@@ -11,6 +11,10 @@ export interface Usertype extends Document {
         shopname: string,
         shopdescription: string,
         shoplogo: string,
+
+     myoders:[{name:string,phoneno:string,location:string,email:string,productid:string}],
+        
+
         shopemail: string,
         shoplinks: [{ link: string }],
         shopadress: string,
