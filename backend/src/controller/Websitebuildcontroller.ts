@@ -87,6 +87,11 @@ export const getwebsite = async (req: Requestwithid, res: Response) => {
     const brandData = userweb.websitesbrands[0];
     const htmlData = generateShopHtml(brandData);
 
+    if (!htmlData) {
+      return res.status(400).send({ message: "website inappropriate theme" })
+    }
+
+
     // Send the actual HTML string
     res.setHeader('Content-Type', 'text/html');
     return res.send(htmlData);
@@ -358,9 +363,9 @@ export const updatewebsite = async (req: Requestwithid, res: Response) => {
 
     const userdata = await Usermodel.findOneAndUpdate(
       {
-        _id:id,
-        "websitesbrands.shopname":webname
-       
+        _id: id,
+        "websitesbrands.shopname": webname
+
       },
       {
         $set: {

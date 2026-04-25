@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Shadow Atelier | Dark Fantasy Boutique</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --blood-crimson: #4a0404;
+            --ethereal-gold: #b39359;
+            --deep-void: #0a0a0a;
+            --mist-white: rgba(255, 255, 255, 0.05);
+        }
+
+        body { 
+            font-family: 'Cormorant Garamond', serif; 
+            background-color: var(--deep-void); 
+            color: #d1d1d1;
+            scroll-behavior: smooth;
+        }
+
+        .fantasy-font { font-family: 'Cinzel Decorative', cursive; }
+        
+        /* Dark Fantasy Aesthetic Classes */
+        .glass-void { 
+            background: rgba(15, 15, 15, 0.85); 
+            backdrop-filter: blur(25px); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .crimson-glow {
+            box-shadow: 0 0 25px rgba(74, 4, 4, 0.4);
+            border: 1px solid var(--blood-crimson);
+        }
+
+        .gold-text { color: var(--ethereal-gold); }
+        
+        /* Custom Scrollbar - Ethereal Style */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--blood-crimson); border-radius: 2px; }
+
+        /* Background Smoke Effect */
+        .smoke-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a0202 0%, #0a0a0a 100%);
+            z-index: -1;
+        }
+
+        [x-cloak] { display: none !important; }
+
+        .btn-artifact {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            border: 1px solid rgba(179, 147, 89, 0.3);
+        }
+
+        .btn-artifact:hover {
+            border-color: var(--ethereal-gold);
+            text-shadow: 0 0 10px var(--ethereal-gold);
+            background: rgba(179, 147, 89, 0.1);
+        }
+    </style>
+</head>
+<body x-data="{ 
+    selectedProduct: null,
+    isCheckout: false,
+    isSubmitting: false,
+    
+    // Mock Data for "One Click Run"
+    brandName: 'THE SHADOW ATELIER',
+    city: 'Eldoria',
+    phone: '+1 (555) 666-0909',
+    products: [
+        { _id: 'p1', productname: 'The Raven Cloak', productdescription: 'Woven from shadows and ancient silk. Provides protection against the unseen.', quantity: 1, productmainphoto: 'https://images.unsplash.com/photo-1539533377285-3422cc01796c?auto=format&fit=crop&q=80&w=800', reviews: [{name: 'Morganna', message: 'The fabric feels alive.'}] },
+        { _id: 'p2', productname: 'Bloodmoon Amulet', productdescription: 'A crimson gem encased in blackened silver. Pulsates with a faint heat.', quantity: 3, productmainphoto: 'https://images.unsplash.com/photo-1618403088890-3d9ff6f4c848?auto=format&fit=crop&q=80&w=800', reviews: [] },
+        { _id: 'p3', productname: 'Elder Grimoire', productdescription: 'Leather-bound secrets of the forgotten era. Read at your own peril.', quantity: 1, productmainphoto: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=800', reviews: [{name: 'Kael', message: 'I hear whispers when I sleep.'}] }
+    ],
+
+    openProduct(p) {
+        this.selectedProduct = p;
+        this.isCheckout = false;
+        document.body.style.overflow = 'hidden';
+    },
+
+    closeProduct() {
+        this.selectedProduct = null;
+        document.body.style.overflow = 'auto';
+    }
+}">
+
+    <div class="smoke-bg"></div>
+
+    <nav class="fixed top-0 w-full z-50 glass-void border-b border-stone-900">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full crimson-glow flex items-center justify-center font-bold fantasy-font text-white bg-black">Ω</div>
+                <span class="text-2xl font-bold tracking-[0.2em] fantasy-font text-white" x-text="brandName"></span>
+            </div>
+            
+            <div class="hidden md:flex gap-12 text-xs uppercase tracking-[0.4em] font-light gold-text">
+                <a href="#" class="hover:text-white transition duration-500">The Vault</a>
+                <a href="#products" class="hover:text-white transition duration-500">Relics</a>
+                <a href="#about" class="hover:text-white transition duration-500">Mythos</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a :href="'tel:' + phone" class="btn-artifact text-white px-6 py-2 text-[10px] fantasy-font uppercase tracking-widest">
+                    Summon Us
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-black/60 z-10"></div>
+        <img src="https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&q=80&w=1920" class="absolute inset-0 w-full h-full object-cover scale-110 opacity-40 grayscale">
+        
+        <div class="relative z-20 text-center text-white px-6 max-w-5xl animate__animated animate__fadeIn">
+            <h2 class="uppercase tracking-[0.8em] text-[11px] mb-8 gold-text font-bold">Est. 1692 • <span x-text="city"></span></h2>
+            <h1 class="text-6xl md:text-9xl mb-10 fantasy-font leading-none italic">Eternal <br> Darkness</h1>
+            <p class="text-xl md:text-2xl mb-14 font-light max-w-2xl mx-auto opacity-70 italic tracking-wide">
+                Where ancient craft meets the shadows of the modern soul. Discover artifacts that transcend the veil.
+            </p>
+            <div class="flex justify-center">
+                <a href="#products" class="px-16 py-6 border border-white/20 hover:border-white transition-all text-xs uppercase tracking-[0.6em] bg-black/40 backdrop-blur-sm">
+                    Enter the Void
+                </a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 animate-bounce text-stone-600">↓</div>
+    </header>
+
+    <main id="products" class="max-w-7xl mx-auto px-6 py-32">
+        <div class="flex flex-col items-center text-center mb-32">
+            <span class="gold-text text-xs font-bold uppercase tracking-[0.5em] mb-6">Curated Relics</span>
+            <h2 class="text-5xl md:text-7xl fantasy-font text-white">The Shadow Collection</h2>
+            <div class="w-32 h-[1px] bg-stone-800 mt-12"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20">
+            <template x-for="p in products">
+                <div @click="openProduct(p)" class="group cursor-pointer animate__animated animate__fadeInUp">
+                    <div class="relative aspect-[3/4] overflow-hidden bg-stone-900 border border-stone-800 transition-all duration-700 group-hover:border-red-900">
+                        <img :src="p.productmainphoto" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-[2s] group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                            <button class="px-10 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white text-[10px] fantasy-font uppercase tracking-widest">
+                                Examine
+                            </button>
+                        </div>
+                        <div class="absolute top-6 left-6 gold-text text-[10px] tracking-widest fantasy-font uppercase">Unique Item</div>
+                    </div>
+                    <div class="mt-10 text-center">
+                        <h3 class="text-2xl fantasy-font text-stone-200 mb-2 group-hover:text-white transition-colors" x-text="p.productname"></h3>
+                        <p class="text-stone-500 text-xs italic tracking-widest uppercase">The Shadow Atelier</p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </main>
+
+    <div x-show="selectedProduct" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/98 backdrop-blur-xl" @click="closeProduct()"></div>
+        
+        <div class="relative glass-void w-full max-w-6xl h-[90vh] md:h-[85vh] overflow-hidden flex flex-col md:flex-row shadow-[0_0_100px_rgba(0,0,0,1)] animate__animated animate__fadeInUp animate__faster">
+            <button @click="closeProduct()" class="absolute top-8 right-8 z-20 text-stone-500 hover:text-white transition-transform hover:rotate-90 duration-500">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="1"/></svg>
+            </button>
+
+            <div class="md:w-3/5 h-1/2 md:h-full bg-black relative flex items-center justify-center overflow-hidden">
+                <img :src="selectedProduct?.productmainphoto" class="max-w-full max-h-[80%] object-contain drop-shadow-[0_0_50px_rgba(74,4,4,0.3)]">
+                <div class="absolute bottom-10 left-10 text-[8px] tracking-[1em] text-stone-700 fantasy-font">AUTHENTIC RELIC</div>
+            </div>
+
+            <div class="md:w-2/5 h-full overflow-y-auto p-12 flex flex-col bg-[#050505] border-l border-stone-900">
+                <div x-show="!isCheckout">
+                    <span class="text-[10px] font-bold uppercase tracking-[0.5em] gold-text mb-4 block" x-text="'Rarity Level: ' + (selectedProduct?.quantity < 2 ? 'EXCEPTIONAL' : 'VINTAGE')"></span>
+                    <h2 class="text-5xl fantasy-font mb-10 text-white" x-text="selectedProduct?.productname"></h2>
+                    <p class="text-stone-400 leading-relaxed mb-12 text-lg italic" x-text="selectedProduct?.productdescription"></p>
+                    
+                    <button @click="isCheckout = true" class="w-full py-6 bg-stone-900 text-white text-[11px] fantasy-font uppercase tracking-[0.4em] hover:bg-[#1a0202] crimson-glow transition-all mb-16">
+                        Claim This Artifact
+                    </button>
+
+                    <div class="border-t border-stone-900 pt-10">
+                        <h4 class="text-[10px] fantasy-font tracking-widest mb-10 text-stone-500 uppercase">Shadow Whispers (Reviews)</h4>
+                        <div class="space-y-10 mb-10">
+                            <template x-for="rev in selectedProduct?.reviews">
+                                <div class="border-l border-red-900 pl-6">
+                                    <p class="text-sm text-stone-300 italic mb-3 leading-relaxed" x-text="'&ldquo;' + rev.message + '&rdquo;'"></p>
+                                    <span class="text-[9px] uppercase tracking-widest gold-text" x-text="'— ' + rev.name"></span>
+                                </div>
+                            </template>
+                            <template x-if="selectedProduct?.reviews.length === 0">
+                                <p class="text-xs text-stone-700 italic uppercase">No soul has reviewed this yet.</p>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="isCheckout" class="animate__animated animate__fadeIn">
+                    <button @click="isCheckout = false" class="text-[10px] gold-text mb-12 flex items-center gap-2 tracking-widest uppercase">
+                        ← The Grimoire
+                    </button>
+                    <h2 class="text-4xl fantasy-font mb-4 text-white">The Binding</h2>
+                    <p class="text-stone-500 text-xs mb-12 italic uppercase tracking-widest">Submit your name to claim your fate.</p>
+                    
+                    <form @submit.prevent="alert('Order request sent to the void.'); closeProduct()" class="space-y-8">
+                        <div>
+                            <label class="text-[9px] uppercase font-bold text-stone-600 tracking-widest block mb-4">True Name</label>
+                            <input type="text" required class="w-full bg-transparent border-b border-stone-800 p-4 outline-none focus:border-red-900 transition-colors text-white">
+                        </div>
+                        <div>
+                            <label class="text-[9px] uppercase font-bold text-stone-600 tracking-widest block mb-4">Mortal Contact (Phone)</label>
+                            <input type="tel" required class="w-full bg-transparent border-b border-stone-800 p-4 outline-none focus:border-red-900 transition-colors text-white">
+                        </div>
+                        <button type="submit" class="w-full py-6 bg-red-950 text-white text-[11px] fantasy-font uppercase tracking-widest hover:bg-red-900 transition-all">
+                            Complete the Seal
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="about" class="bg-black py-32 px-6 border-t border-stone-900">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-24">
+            <div class="col-span-1 md:col-span-2">
+                <h3 class="text-4xl fantasy-font mb-10 text-white">The Shadow Atelier</h3>
+                <p class="max-w-sm text-sm text-stone-500 leading-loose italic mb-10">
+                    Purveyors of fine darkness since the late 17th century. We do not sell items; we broker connections between the mundane and the eternal.
+                </p>
+                <div class="flex gap-10 text-[10px] tracking-[0.4em] uppercase gold-text">
+                    <a href="#">Instagram</a>
+                    <a href="#">Facebook</a>
+                </div>
+            </div>
+            
+            <div class="space-y-8">
+                <h4 class="text-xs fantasy-font text-white tracking-widest uppercase">The Location</h4>
+                <p class="text-stone-500 text-sm leading-relaxed italic" x-text="city + ', The Grey Realms'"></p>
+                <p class="text-[10px] text-stone-700 tracking-[0.3em] uppercase font-bold">Open when the moon is full.</p>
+            </div>
+
+            <div class="space-y-8">
+                <h4 class="text-xs fantasy-font text-white tracking-widest uppercase">The Contact</h4>
+                <p class="text-stone-500 text-sm italic">summon@shadowatelier.com</p>
+                <p class="text-stone-500 text-sm italic" x-text="phone"></p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-32 pt-10 border-t border-stone-900 flex justify-between items-center text-[8px] uppercase tracking-[0.6em] text-stone-800">
+            <p>© 2026 THE SHADOW ATELIER. BEYOND THE VEIL.</p>
+            <p>DESIGNED BY ANCIENT HANDS</p>
+        </div>
+    </footer>
+
+</body>
+</html>

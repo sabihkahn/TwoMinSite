@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PerfumesPK | Unleash the Power</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-black: #0a0a0a;
+            --primary-purple: #4b0082;
+            --accent-violet: #9d00ff;
+            --silver-text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--silver-text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .gothic-font {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #4b0082; border-radius: 10px; }
+
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Glowing Text */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.7), 0 0 20px rgba(157, 0, 255, 0.3);
+        }
+
+        /* Smoke Overlay Animation */
+        .smoke-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+            opacity: 0.2;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* Floating Particles Simulation */
+        .particle {
+            position: absolute;
+            background: rgba(157, 0, 255, 0.4);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        /* Button Glow Pulse */
+        .btn-glow:hover {
+            box-shadow: 0 0 25px var(--accent-violet);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 15px var(--primary-purple));
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 px-6 py-4 flex justify-between items-center bg-transparent">
+        <div class="text-2xl font-bold text-[#9d00ff] tracking-widest glow-text gothic-font">
+            PerfumesPK
+        </div>
+        <ul class="hidden md:flex space-x-10 text-xs uppercase tracking-[0.3em] font-light">
+            <li><a href="#" class="hover:text-[#9d00ff] transition">Home</a></li>
+            <li><a href="#" class="hover:text-[#9d00ff] transition">Shop</a></li>
+            <li><a href="#" class="hover:text-[#9d00ff] transition">Contact</a></li>
+        </ul>
+        <div class="flex space-x-5 items-center">
+            <i class="fa-solid fa-magnifying-glass cursor-pointer hover:text-[#9d00ff]"></i>
+            <i class="fa-solid fa-cart-shopping cursor-pointer hover:text-[#9d00ff]"></i>
+        </div>
+    </nav>
+
+    <header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://play-lh.googleusercontent.com/qPm7GmZkDoxZnTW0qiTJmdn26IuDgHNZ4N1539c6QesYrcbTf8B_rH8RtrBK9d39FPuDx-J7AF5AUs_GRV6Uig=w526-h296-rw" class="w-full h-full object-cover" alt="Fantasy Banner">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-[#0a0a0a]/80 to-[#0a0a0a]"></div>
+            <div class="smoke-overlay"></div>
+        </div>
+
+        <div class="particle w-2 h-2" style="top: 80%; left: 10%; animation-delay: 0s;"></div>
+        <div class="particle w-3 h-3" style="top: 90%; left: 50%; animation-delay: 5s;"></div>
+        <div class="particle w-1 h-1" style="top: 70%; left: 80%; animation-delay: 2s;"></div>
+
+        <div class="relative z-10 text-center px-4" data-aos="fade-up" data-aos-duration="1500">
+            <h1 class="text-5xl md:text-8xl font-bold mb-6 tracking-tighter glow-text leading-tight">
+                Unleash the Power <br> <span class="text-white/90 italic text-4xl md:text-6xl">of Fragrance</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 mb-10 tracking-widest max-w-2xl mx-auto font-light italic">
+                Step into a world of mystery and luxury scents.
+            </p>
+            <a href="#shop" class="btn-glow px-10 py-4 bg-[#4b0082] text-white uppercase tracking-[0.2em] text-sm rounded-full inline-block border border-[#9d00ff]/30">
+                Enter the Void
+            </a>
+        </div>
+    </header>
+
+    <section id="shop" class="py-24 px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-20" data-aos="fade-up">
+            <h2 class="text-4xl gothic-font mb-4">Elixirs of Night</h2>
+            <div class="h-1 w-20 bg-[#4b0082] mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="product-card glass p-6 rounded-3xl group transition-all duration-500 hover:border-[#9d00ff]/50" data-aos="zoom-in-up">
+                <div class="relative overflow-hidden rounded-2xl mb-6 h-80 bg-black/40 flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=400" 
+                         class="w-3/4 transition-all duration-700" alt="Perfume 1">
+                </div>
+                <h3 class="text-xl mb-2">Midnight Velvet</h3>
+                <p class="text-[#9d00ff] font-bold tracking-widest mb-4">$180.00</p>
+                <button class="w-full py-3 rounded-xl border border-white/10 hover:bg-[#4b0082] hover:text-white transition uppercase text-xs tracking-widest">
+                    Add to Grimoire
+                </button>
+            </div>
+
+            <div class="product-card glass p-6 rounded-3xl group transition-all duration-500 hover:border-[#9d00ff]/50" data-aos="zoom-in-up" data-aos-delay="200">
+                <div class="relative overflow-hidden rounded-2xl mb-6 h-80 bg-black/40 flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=400" 
+                         class="w-3/4 transition-all duration-700" alt="Perfume 2">
+                </div>
+                <h3 class="text-xl mb-2">Arcane Oud</h3>
+                <p class="text-[#9d00ff] font-bold tracking-widest mb-4">$240.00</p>
+                <button class="w-full py-3 rounded-xl border border-white/10 hover:bg-[#4b0082] hover:text-white transition uppercase text-xs tracking-widest">
+                    Add to Grimoire
+                </button>
+            </div>
+
+            <div class="product-card glass p-6 rounded-3xl group transition-all duration-500 hover:border-[#9d00ff]/50" data-aos="zoom-in-up" data-aos-delay="400">
+                <div class="relative overflow-hidden rounded-2xl mb-6 h-80 bg-black/40 flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=400" 
+                         class="w-3/4 transition-all duration-700" alt="Perfume 3">
+                </div>
+                <h3 class="text-xl mb-2">Shadow Rose</h3>
+                <p class="text-[#9d00ff] font-bold tracking-widest mb-4">$195.00</p>
+                <button class="w-full py-3 rounded-xl border border-white/10 hover:bg-[#4b0082] hover:text-white transition uppercase text-xs tracking-widest">
+                    Add to Grimoire
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gradient-to-t from-[#1a0033] to-[#0a0a0a] pt-20 pb-10 px-8 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+            <div>
+                <h4 class="text-[#9d00ff] gothic-font text-2xl mb-6 glow-text">PerfumesPK</h4>
+                <p class="text-sm text-gray-500 leading-loose">Crafting mystical experiences through the art of fine perfumery. Born in the shadows, designed for the light.</p>
+            </div>
+            <div class="flex flex-col space-y-4 text-sm">
+                <h4 class="uppercase tracking-widest text-white mb-2">Navigation</h4>
+                <a href="#" class="hover:text-[#9d00ff]">The Collection</a>
+                <a href="#" class="hover:text-[#9d00ff]">Our Secret Process</a>
+                <a href="#" class="hover:text-[#9d00ff]">Terms of Magic</a>
+            </div>
+            <div class="flex flex-col items-center md:items-end">
+                <h4 class="uppercase tracking-widest text-white mb-6">Connect with the Void</h4>
+                <div class="flex space-x-6 text-xl">
+                    <a href="#" class="hover:text-[#9d00ff] transition-all"><i class="fa-brands fa-instagram drop-shadow-[0_0_8px_#9d00ff]"></i></a>
+                    <a href="#" class="hover:text-[#9d00ff] transition-all"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="hover:text-[#9d00ff] transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-20 text-center text-[10px] text-gray-600 uppercase tracking-[0.5em]">
+            &copy; 2026 PerfumesPK. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize Animations
+        AOS.init();
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('glass', 'py-2');
+                nav.classList.remove('py-4', 'bg-transparent');
+            } else {
+                nav.classList.remove('glass', 'py-2');
+                nav.classList.add('py-4', 'bg-transparent');
+            }
+        });
+    </script>
+</body>
+</html>
