@@ -5,6 +5,8 @@ import Usermodel from "../models/usermodel";
 import mongoose from "mongoose";
 import { generateShopHtml } from '../utils/website/websiteshowed'
 import { ProductSchema } from '../zodprotection/zodcreateProduct'
+
+
 interface Requestwithid extends Request {
   id?: any;
 }
@@ -126,7 +128,7 @@ export const addProduct = async (req: Requestwithid, res: Response) => {
     }
 
 
-    res.status(200).send({ message: "product created successfully", user, productdata, webname })
+    res.status(200).send({ message: "product created successfully" })
 
 
   } catch (error) {
@@ -147,23 +149,23 @@ export const addreview = async (req: Requestwithid, res: Response) => {
       res.status(400).send({ message: "review is not provided" })
     }
 
-   const user = await Usermodel.findOneAndUpdate(
-  {
-    "websitesbrands.shopProducts._id": productId
-  },
-  {
-    $push: {
-      "websitesbrands.$[].shopProducts.$[product].reviews": review
-    }
-  },
-  {
-    arrayFilters: [
-      { "product._id": productId }
-    ],
-    returnDocument: "after"
-  }
-);
-res.status(200).send({message:"review added successfully"})
+    const user = await Usermodel.findOneAndUpdate(
+      {
+        "websitesbrands.shopProducts._id": productId
+      },
+      {
+        $push: {
+          "websitesbrands.$[].shopProducts.$[product].reviews": review
+        }
+      },
+      {
+        arrayFilters: [
+          { "product._id": productId }
+        ],
+        returnDocument: "after"
+      }
+    );
+    res.status(200).send({ message: "review added successfully" })
   } catch (error) {
     logger.error("an error occur in addreview controller ===> ", error)
     res.status(500).send({ message: "Internal server error" })
@@ -298,12 +300,106 @@ export const updateproduct = async (req: Requestwithid, res: Response) => {
   }
 };
 
+export const deletewebsite = async (req: Requestwithid, res: Response) => {
+  try {
+
+    const id = req.id?.id
+    const { webname } = req.params
+
+    if (!webname) {
+      return res.status(400).send({ message: "webname is required" })
+    }
+
+    const userdata = await Usermodel.findByIdAndUpdate(
+      id,
+      {
+        $pull: {
+          websitesbrands: {
+            shopname: webname
+          }
+        }
+      },
+      { new: true }
+    )
+
+    if (!userdata) {
+      res.status(400).send({ message: " no website found " })
+    }
+
+    res.status(200).send({ message: "website deleted successfully" })
+
+
+  } catch (error) {
+    logger.error(" an error occur while deleting website ==> ", error)
+    res.status(500).send({ message: "Internal server error" })
+  }
+}
+
+export const updatewebsite = async (req: Requestwithid, res: Response) => {
+  try {
+
+    const id = req.id?.id
+    const { webname } = req.params
+
+    const {
+      shopname,
+      shopdescription,
+      shoplogo,
+      shopemail,
+      shoplinks,
+      shopadress,
+      phone,
+      city,
+      country,
+      mapLocation,
+      shophomepageimg
+    } = req.body
+
+
+    const userdata = await Usermodel.findOneAndUpdate(
+      {
+        _id:id,
+        "websitesbrands.shopname":webname
+       
+      },
+      {
+        $set: {
+          "websitesbrands.$.shopdescription": shopdescription,
+          "websitesbrands.$.shoplogo": shoplogo,
+          "websitesbrands.$.shopemail": shopemail,
+          "websitesbrands.$.shoplinks": shoplinks,
+          "websitesbrands.$.shopadress": shopadress,
+          "websitesbrands.$.phone": phone,
+          "websitesbrands.$.city": city,
+          "websitesbrands.$.country": country,
+          "websitesbrands.$.mapLocation": mapLocation,
+          "websitesbrands.$.shophomepageimg": shophomepageimg
+        }
+      },
+      { returnDocument: 'after' }
+    )
+
+    if (!userdata) {
+      res.status(400).send({ message: " no website found " })
+    }
+
+    res.status(200).send({ message: "updated successfully" })
+
+
+
+  } catch (error) {
+    logger.error("an error occur in updatewebsite controller ==> ", error)
+    res.status(500).send({ message: "internal server error" })
+  }
+}
 
 // todo
 // 1: have to add route which will update the data of user
+
 //             exmaple delete website and update website
-// 2: add some profile auth dashbord and all data route 
-// 3: add update profile route 
+
+// 2: add some profile auth dashbord and all data route
+// 3: add update profile route
 
 
 // add more theme move to frontend

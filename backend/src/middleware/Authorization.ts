@@ -19,7 +19,7 @@ export const Authorization = (req: Authrequenst, res: Response, next: NextFuncti
         }
 
         const decode = jwt.verify(token, process.env.JWT_SECRET!)
-        logger.info("deode jwt is ",decode)
+       
 
         if (!decode) {
             return res.status(400).send({ message: "unauthorized" })
