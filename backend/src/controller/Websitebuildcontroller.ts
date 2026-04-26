@@ -398,8 +398,51 @@ export const updatewebsite = async (req: Requestwithid, res: Response) => {
   }
 }
 
+export const updateTheme = async (req: Requestwithid, res: Response) => {
+  try {
+
+    const id = req.id?.id
+    const { webname, newtheme } = req.body
+
+    const themes = [
+      "default",
+      "forest",
+      "dark",
+      "greenwoods",
+      "softglass",
+      "neonfuture",
+      "darkblue",
+      "gothic"
+    ]
+
+    if(!themes.includes(newtheme)){
+      return res.status(400).send({message:"invalid theme"})
+    }
+
+    const updateuserweb = await Usermodel.findOneAndUpdate(
+      {
+        _id: id,
+        "websitesbrands.shopname": webname
+      },
+      {
+        "websitesbrands.$.theme": newtheme
+
+      }
+    )
+
+    res.status(200).send({message:"theme updated successfully"})
+  } catch (error) {
+    logger.info("an error occur in update theme controller ====> ", error)
+    res.status(500).send({ message: "internal server error" })
+  }
+
+}
+
+
+
+
 // todo
-// 1: have to add route which will update the data of user
+// done  have to add route which will update the data of user
 
 //             exmaple delete website and update website
 

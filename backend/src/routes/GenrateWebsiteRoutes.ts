@@ -1,6 +1,6 @@
 import express, { Router } from 'express'
 import { Authorization } from '../middleware/Authorization'
-import { addProduct, addreview, CreateWebsite, deleteproduct, deletewebsite, getwebsite, purchaseproduct, updateproduct, updatewebsite } from '../controller/Websitebuildcontroller'
+import { addProduct, addreview, CreateWebsite, deleteproduct, deletewebsite, getwebsite, purchaseproduct, updateproduct, updateTheme, updatewebsite } from '../controller/Websitebuildcontroller'
 
 
 const router: Router = express.Router()
@@ -24,6 +24,6 @@ router.delete('/deletewebsite/:webname',Authorization,deletewebsite)
 
 router.put('/updatewebsite/:webname',Authorization,updatewebsite)
 
-
+router.put('/updatetheme',Authorization,updateTheme)
 
 export default router
