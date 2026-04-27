@@ -5,6 +5,11 @@ import { RegisterSchema } from '../zodprotection/zodUserRegisterSchema';
 import Bcrypt from 'bcrypt';
 import { genrateToken } from "../utils/jwt";
 import { LoginSchema } from "../zodprotection/zodUserLoginSchema";
+import { updateprofileschema } from "../zodprotection/zodupdatepofile";
+
+interface reqwithid extends Request{
+    id?:any
+}
 
 export const register = async (req: Request, res: Response) => {
 
@@ -102,4 +107,65 @@ export const login = async (req: Request, res: Response) => {
         return res.status(500).send({ message: "Internal server error" });
     }
 };
+
+
+export const profile =  async (req: reqwithid, res: Response) => {
+    try {
+        const id = req.id?.id
+
+        if(!id){
+           return res.status(400).send({message:"id is not provided"})
+        }
+
+        const user = await Usermodel.findById(id).select({
+            websites:0,
+            websitesbrands:0
+        })
+
+        res.status(200).send({message:"profile get successfully",user:user})
+
+
+    } catch (error) {
+        logger.error("an error ocur in profile controller ",error)
+        res.status(500).send({message:"Inernal server error"})
+    }
+}
+
+
+export const updateprofile  =  async (req: reqwithid, res: Response) => {
+     const validationResult = updateprofileschema.safeParse(req.body);
+
+    if (!validationResult.success) {
+        return res.status(400).send({
+            message: "Validation failed",
+            errors: validationResult.error.flatten().fieldErrors
+        });
+    }
+try {
+
+    const id = req.id?.id
+    const {password,name} = validationResult.data
+  
+
+   
+
+    const user = await Usermodel.findById({_id:id})
+
+    if(!user){
+        return res.status(400).send({message:"no user found"})
+    }
+
+      
+     const hash = await Bcrypt.hash(password,10)
+     user.password = password
+     user.name = name
+     await user.save()
+  
+    res.status(200).send({message:"user updated successfully"})
+
+} catch (error) {
+    res.status(500).send({message:"internal server error"})
+    logger.error("an error occur in update profile ===> ",error)
+}
+}
 

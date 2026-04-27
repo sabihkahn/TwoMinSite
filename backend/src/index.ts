@@ -6,7 +6,7 @@ import userRoutes from './routes/userRoutes'
 import cookieparser from 'cookie-parser'
 import {rateLimit} from 'express-rate-limit'
 import websiteRoutes from './routes/GenrateWebsiteRoutes'
-
+import dashbordroutes from './routes/DashboardRoutes'
 DBconnection()
 
 const app:Application = express()
@@ -28,7 +28,7 @@ app.use(cookieparser())
 
 app.use('/auth/user',userRoutes)
 app.use('/web',websiteRoutes)
-
+app.use('/data',dashbordroutes)
 
 app.get("/",(req:Request,res:Response)=>{
     try {
