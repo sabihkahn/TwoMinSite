@@ -9,7 +9,7 @@ router.post('/register',register)
 router.post('/login',login)
 router.get('/profile',Authorization,profile)
 router.put('/updateprofile',Authorization,updateprofile)
-router.get('/dashboard',Authorization)
+
 
 
 export default router
