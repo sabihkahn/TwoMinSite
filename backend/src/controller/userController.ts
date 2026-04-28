@@ -169,3 +169,25 @@ try {
 }
 }
 
+
+export const checkController = async (req: reqwithid, res: Response) => {
+    try {
+        const id = req.id?.id
+        if(!id){
+            return res.status(400).send({message:"unauthorized"})
+        }
+        const user = await Usermodel.findById({_id:id}).select({
+            password:0,
+            websites:0,
+            websitesbrands:0
+        })
+        if(!user){
+            return res.status(400).send({message:"user don't found unauthorized"})
+        }
+
+        res.status(200).send({message:"successfully done"})
+    } catch (error) {
+        logger.error("an error occur in checkcontroller ===> ",error)
+        res.status(500).send({message:"internal server error"})
+    }
+}
