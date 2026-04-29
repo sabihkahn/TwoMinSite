@@ -1,11 +1,13 @@
 import React from 'react'
 
-const Contactus = () => {
+const Feature = () => {
   return (
     <div className="min-h-screen bg-red-500 text-white flex items-center justify-center">
-      CONTACT PAGE TEST
+      Feature PAGE TEST
     </div>
   )
 }
 
-export default Contactus
+
+
+export default Feature

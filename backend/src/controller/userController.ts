@@ -185,7 +185,7 @@ export const checkController = async (req: reqwithid, res: Response) => {
             return res.status(400).send({message:"user don't found unauthorized"})
         }
 
-        res.status(200).send({message:"successfully done"})
+        res.status(200).send({message:"successfully done",user})
     } catch (error) {
         logger.error("an error occur in checkcontroller ===> ",error)
         res.status(500).send({message:"internal server error"})

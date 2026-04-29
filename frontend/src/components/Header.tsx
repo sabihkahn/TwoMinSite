@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Command, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuthStore } from "../store/useAuthStore";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  const { User } = useAuthStore()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -28,13 +31,12 @@ const Header = () => {
         New: Two Min Web AI is now in Beta →
       </div>
 
-      <div className={`w-full border-b transition-all duration-300 ${
-        scrolled 
-          ? "bg-black/70 backdrop-blur-xl border-white/10 py-3" 
+      <div className={`w-full border-b transition-all duration-300 ${scrolled
+          ? "bg-black/70 backdrop-blur-xl border-white/10 py-3"
           : "bg-black border-transparent py-5"
-      }`}>
+        }`}>
         <div className="max-w-[1400px] mx-auto px-6 flex justify-between items-center">
-          
+
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className="bg-white p-1.5 rounded-md group-hover:bg-yellow-400 transition-colors">
@@ -51,11 +53,10 @@ const Header = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-all ${
-                  location.pathname === link.path 
-                    ? "bg-white/10 text-white shadow-sm" 
+                className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-all ${location.pathname === link.path
+                    ? "bg-white/10 text-white shadow-sm"
                     : "text-gray-400 hover:text-white"
-                }`}
+                  }`}
               >
                 {link.name}
               </Link>
@@ -64,21 +65,27 @@ const Header = () => {
 
           {/* Action Area */}
           <div className="flex items-center gap-3">
-            <Link 
-              to="/login" 
+            {User ? <Link
+              to="/dashboard"
+              className="bg-white text-black text-[13px] font-bold px-4 py-1.5 rounded-md hover:bg-yellow-400 transition-all active:scale-[0.98]"
+            >
+              Go to Dashbord
+            </Link> : (<><Link
+              to="/login"
               className="hidden sm:block text-[13px] font-medium text-gray-400 hover:text-white px-3 py-1.5 transition"
             >
               Sign in
             </Link>
-            <Link 
-              to="/register" 
-              className="bg-white text-black text-[13px] font-bold px-4 py-1.5 rounded-md hover:bg-yellow-400 transition-all active:scale-[0.98]"
-            >
-              Start Free
-            </Link>
+              <Link
+                to="/register"
+                className="bg-white text-black text-[13px] font-bold px-4 py-1.5 rounded-md hover:bg-yellow-400 transition-all active:scale-[0.98]"
+              >
+                Start Free
+              </Link>
+            </>)}
 
             {/* Mobile Toggle */}
-            <button 
+            <button
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden ml-2 text-gray-400 hover:text-white"
             >

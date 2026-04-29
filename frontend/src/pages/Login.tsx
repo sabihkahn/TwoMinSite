@@ -1,24 +1,66 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { data, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Command, ArrowRight, BookXIcon, Loader2 } from 'lucide-react';
+import { useAuthStore } from '../store/useAuthStore'
+import apiClient from '../api/axiosapiinstance'
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
 
 const Login = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { setUser, User } = useAuthStore()
   const navigate = useNavigate();
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Logic to hit your /auth/user/login endpoint
+
+
     try {
-      // simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log("Logging in with:", { email, password });
-      navigate('/dashboard'); 
+
+      await apiClient.post(`/auth/user/login`, {
+        email,
+        password
+      })
+        .then((res) => {
+
+          toast.success(res.data.message || 'Login Successful!');
+
+
+          setUser(res.data.user);
+
+        })
+        .catch((err) => {
+
+          const errorMsg = err.response?.data?.message || "Login failed. Please try again.";
+
+          toast.error(errorMsg, {
+            duration: 4000,
+            style: {
+              background: '#1c1c1c',
+              color: '#fff',
+              border: '1px solid #ef4444' // Red border for error
+            }
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      let userdata = await apiClient.get('/auth/user/check').then((userdata) => {
+        setUser(userdata.data.user)
+      })
+      navigate('/dashboard');
+
+      console.log(User)
+
     } catch (error) {
       console.error("Login failed");
     } finally {
@@ -34,7 +76,7 @@ const Login = () => {
         <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-white/5 blur-[120px] rounded-full" />
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -58,8 +100,8 @@ const Login = () => {
               <label className="block text-[12px] font-medium uppercase tracking-wider text-gray-500 mb-2">
                 Email Address
               </label>
-              <input 
-                type="email" 
+              <input
+                type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -75,8 +117,8 @@ const Login = () => {
                 </label>
                 <a href="#" className="text-[11px] text-yellow-400 hover:underline">Forgot?</a>
               </div>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -85,7 +127,7 @@ const Login = () => {
               />
             </div>
 
-            <button 
+            <button
               type="submit"
               disabled={loading}
               className="w-full bg-white text-black font-bold py-2.5 rounded-md text-sm flex items-center justify-center gap-2 hover:bg-yellow-400 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
