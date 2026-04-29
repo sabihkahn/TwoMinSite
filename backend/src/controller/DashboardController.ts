@@ -57,22 +57,23 @@ export const getWebsiteanalytics = async (req: Requestwithid, res: Response) => 
         if (!id) {
             return res.status(400).send({ message: "id is not provided" })
         }
-        
+
 
         const userweb = await Usermodel.aggregate([
-            {$match:{_id:new mongoose.Types.ObjectId(id)}},
+            { $match: { _id: new mongoose.Types.ObjectId(id) } },
             {
-                $project:{
-                    targetWeb:{
-                    $filter:{
-                        input:"$websitesbrands",
-                        as:"item",
-                        cond:{$eq:["$$item.shopname",webname]}
-                }}
+                $project: {
+                    targetWeb: {
+                        $filter: {
+                            input: "$websitesbrands",
+                            as: "item",
+                            cond: { $eq: ["$$item.shopname", webname] }
+                        }
+                    }
                 }
             },
             {
-                $unwind:"$targetWeb"
+                $unwind: "$targetWeb"
             },
             {
                 $project: {
@@ -87,7 +88,7 @@ export const getWebsiteanalytics = async (req: Requestwithid, res: Response) => 
             }
         ])
 
-        res.status(200).send({message:"analytics get successfully ",analytics:userweb[0]})
+        res.status(200).send({ message: "analytics get successfully ", analytics: userweb[0] })
 
     } catch (error) {
         logger.error("an error occur in getwebsite analytics controller ===>", error)
@@ -95,3 +96,54 @@ export const getWebsiteanalytics = async (req: Requestwithid, res: Response) => 
     }
 }
 
+
+export const searchWebsite = async (req: Requestwithid, res: Response) => {
+  try {
+    const id = req.id?.id;
+    let { webname } = req.query;
+
+    const searchString = webname?.toString() || "";
+
+    if (!searchString) {
+      return res.status(400).send({ message: "web name is not provided" });
+    }
+
+    const result = await Usermodel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(id) }
+      },
+      {
+        $project: {
+          websitesbrands: {
+            $filter: {
+              input: "$websitesbrands",
+              as: "item",
+              cond: {
+                $regexMatch: {
+                  input: "$$item.shopname",
+                  regex: searchString,
+                  options: "i"
+                }
+              }
+            }
+          }
+        }
+      }
+    ]);
+
+    const websites = result[0]?.websitesbrands?.map((e: any) => ({
+      shopname: e.shopname,
+      shoplogo: e.shoplogo,
+      shopid: e._id
+    })) || [];
+
+    res.status(200).send({
+      message: "Search successful",
+      websites
+    });
+
+  } catch (error) {
+    logger.error("Error in searchWebsite controller ==> ", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};

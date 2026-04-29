@@ -17,6 +17,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Pricing from './pages/Pricing'
 import Feature from './pages/Feature'
+import CreateWebsite from './pages/CreateWebsite'
 const App = () => {
 
   const { User, setUser, checkAuth, isCheckingAuth } = useAuthStore()
@@ -42,6 +43,7 @@ const isDashboard = location.pathname.startsWith("/dashboard");
           <Route path='/aboutus' element={<About />} />
           <Route path='/pricing' element={<Pricing />} />
           <Route path='/features' element={<Feature />} />
+          <Route path='/dashboard/createwebsite' element={<CreateWebsite />} />
 
 
           <Route path='/contactus' element={<Contactus />} />

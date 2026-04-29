@@ -191,3 +191,16 @@ export const checkController = async (req: reqwithid, res: Response) => {
         res.status(500).send({message:"internal server error"})
     }
 }
+
+
+export const logoutController = async (req: reqwithid, res: Response) => {
+try {
+    
+    res.clearCookie("jwt")
+    res.status(200).send({message:"logout successfully"})
+    
+} catch (error) {
+    logger.error("an error occur in logout controller ==> ",error)
+    res.status(500).send({message:"Internal server error"})
+}
+}
