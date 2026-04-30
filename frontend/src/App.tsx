@@ -18,6 +18,7 @@ import Footer from './components/Footer'
 import Pricing from './pages/Pricing'
 import Feature from './pages/Feature'
 import CreateWebsite from './pages/CreateWebsite'
+import Managestore from './pages/Managestore'
 const App = () => {
 
   const { User, setUser, checkAuth, isCheckingAuth } = useAuthStore()
@@ -44,13 +45,13 @@ const isDashboard = location.pathname.startsWith("/dashboard");
           <Route path='/pricing' element={<Pricing />} />
           <Route path='/features' element={<Feature />} />
           <Route path='/dashboard/createwebsite' element={<CreateWebsite />} />
-
+          <Route path='/dashboard/managestore' element={<Managestore />} />
 
           <Route path='/contactus' element={<Contactus />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/dashboard' element={User ? <Dashbord /> : <Navigate to="/login" />} />
-          <Route path='/dashboard/webanalytics' element={User ? <WebAnalytics /> : <Navigate to="/login" />} />
+          {/* <Route path='/dashboard/webanalytics' element={User ? <WebAnalytics /> : <Navigate to="/login" />} /> */}
           <Route path='/dashboard/updateWebsite' element={User ? <UpdateWebsite /> : <Navigate to="/login" />} />
           <Route path='/' element={<LandingPage />} />
         </Routes>

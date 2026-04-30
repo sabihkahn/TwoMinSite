@@ -11,7 +11,7 @@ interface HeaderProps {
 }
 
 const Headerdashboard = ({ onRefresh }: HeaderProps) => {
-    const { total, setWebsites } = useDashboardStore()
+    const { total, setWebsites, setAnalytics, analytics } = useDashboardStore()
     const [isSearching, setIsSearching] = useState(false)
     const [searchValue, setSearchValue] = useState("")
     const navigate = useNavigate()
@@ -27,7 +27,7 @@ const Headerdashboard = ({ onRefresh }: HeaderProps) => {
             onRefresh();
             return;
         }
-        
+
         setIsSearching(true)
         try {
             const res = await apiClient.post(`/data/searchweb?webname=${searchValue}`)
@@ -43,9 +43,11 @@ const Headerdashboard = ({ onRefresh }: HeaderProps) => {
         }
     }
 
-    function handelclick(){
-navigate('/dashboard/createwebsite')
+    function handelclick() {
+        navigate('/dashboard/createwebsite')
     }
+
+ 
     return (
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
             <div>
@@ -57,15 +59,15 @@ navigate('/dashboard/createwebsite')
 
             <div className="flex items-center gap-3 w-full md:w-auto">
                 <div className="relative flex-1 md:w-72">
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         placeholder="Search your shops..."
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-yellow-400 transition-all"
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                     />
-                    <button 
+                    <button
                         onClick={handleSearch}
                         disabled={isSearching}
                         className="absolute right-2 top-1.5 bottom-1.5 px-3 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 disabled:opacity-50 transition-all"

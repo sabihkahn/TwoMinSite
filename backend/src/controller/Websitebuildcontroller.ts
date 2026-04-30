@@ -144,7 +144,6 @@ export const addProduct = async (req: Requestwithid, res: Response) => {
   }
 }
 
-
 export const addreview = async (req: Requestwithid, res: Response) => {
   try {
 
@@ -176,8 +175,6 @@ export const addreview = async (req: Requestwithid, res: Response) => {
     res.status(500).send({ message: "Internal server error" })
   }
 }
-
-
 
 export const purchaseproduct = async (req: Requestwithid, res: Response) => {
   try {
@@ -415,8 +412,8 @@ export const updateTheme = async (req: Requestwithid, res: Response) => {
       "gothic"
     ]
 
-    if(!themes.includes(newtheme)){
-      return res.status(400).send({message:"invalid theme"})
+    if (!themes.includes(newtheme)) {
+      return res.status(400).send({ message: "invalid theme" })
     }
 
     const updateuserweb = await Usermodel.findOneAndUpdate(
@@ -430,7 +427,7 @@ export const updateTheme = async (req: Requestwithid, res: Response) => {
       }
     )
 
-    res.status(200).send({message:"theme updated successfully"})
+    res.status(200).send({ message: "theme updated successfully" })
   } catch (error) {
     logger.info("an error occur in update theme controller ====> ", error)
     res.status(500).send({ message: "internal server error" })
@@ -439,16 +436,57 @@ export const updateTheme = async (req: Requestwithid, res: Response) => {
 }
 
 
+export const getproductsandorders = async (req: Requestwithid, res: Response) => {
+  try {
+    const { webname } = req.params; 
+    const id = req.id?.id;
+
+    const userdata = await Usermodel.findById(
+      id,
+      {
+        websitesbrands: { $elemMatch: { shopname: webname } }
+      }
+    );
+
+    if (!userdata || !userdata.websitesbrands?.length) {
+      return res.status(404).send({ message: "Shop not found", products: [] });
+    }
+
+    const productsarray = userdata.websitesbrands[0].shopProducts;
+     const ordersdata = userdata?.websitesbrands[0].myoders
+
+    res.status(200).send({
+      message: "product fetched successfully",
+      products: productsarray,
+      orders:ordersdata
+    });
+
+  } catch (error) {
+    logger.error("an error occur in getproduct controller ==> ", error);
+    res.status(500).send({ message: "internal server error" });
+  }
+};
 
 
-// todo
-// done  have to add route which will update the data of user
+// export const getOrders = async (req: Requestwithid, res: Response) => {
+//   try {
+//     const { webname } = req.params;
+//     const id = req.id?.id;
+    
 
-//             exmaple delete website and update website
+//     const userdata = await Usermodel.findById(
+//       id,
+//       {
+//         websitesbrands: { $elemMatch: { shopname: webname } }
+//       }
+//     );
 
-// 2: add some profile auth dashbord and all data route
-// 3: add update profile route
+//     const ordersdata = userdata?.websitesbrands[0].myoders
 
+//     res.status(200).send({message:"get order successfully",ordersdata})
 
-// add more theme move to frontend
-
+//   } catch (error) {
+//     logger.error("an error occur in getOrders controller ", error)
+//     res.status(500).send({ message: "interenal server error" })
+//   }
+// }

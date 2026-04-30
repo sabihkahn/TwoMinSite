@@ -5,11 +5,12 @@ import LoadingComponent from '../components/Loadingcomponent'
 import toast from 'react-hot-toast'
 import Headerdashboard from '../components/Dashbordcomponents/Headerdashboard'
 import { Globe, ArrowRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const Dashbord = () => {
-  const { setTotal, setWebsites, websites, setLoading, loading } = useDashboardStore()
+  const { setTotal,setAnalytics,analytics, setWebsites, websites, setLoading, loading } = useDashboardStore()
+  const navigate = useNavigate()
 
-  // Use callback to prevent unnecessary re-renders in Header useEffect
   const FetchWebsitesDashbord = useCallback(async () => {
     try {
       const res = await apiClient.get('/data/dashboard')
@@ -23,6 +24,7 @@ const Dashbord = () => {
     }
   }, [setTotal, setWebsites, setLoading])
 
+  
   useEffect(() => {
     setLoading(true)
     FetchWebsitesDashbord()
@@ -32,6 +34,30 @@ const Dashbord = () => {
     console.log("Selected Website Data:", web)
     window.open(`${import.meta.env.VITE_BASE_URL}/web/mywebsite/${web.shopname}`)
   }
+
+  async function getanalytics(web:any) {
+        try {
+            const analytics1 = await apiClient.post('/data/websiteanalytics',{
+              webname:web.shopname, 
+              webid:web.shopid
+            }).then((res)=>{
+
+              setAnalytics(res?.data.analytics)
+              console.log(res.data.analytics)
+              toast.success(res.data.message || "analytics fetched successfully")
+            }).catch((err)=>{
+              console.log(err)
+              toast.error(err.response?.data?.message || "cant get analytics ")
+            }).finally(()=>{
+            navigate('/dashboard/managestore')
+            })
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
 
   if (loading) {
     return <LoadingComponent />
@@ -49,7 +75,6 @@ const Dashbord = () => {
             websites.map((web: any) => (
               <div
                 key={web.shopid}
-                onClick={() => handleWebsiteClick(web)}
                 className="group relative bg-white/[0.02] border border-white/10 rounded-2xl p-6 cursor-pointer hover:bg-white/[0.05] hover:border-yellow-400/50 transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
@@ -70,7 +95,7 @@ const Dashbord = () => {
                     </span>
                   </div>
                   <div className="text-gray-600 group-hover:text-yellow-400 transition-colors">
-                    <Globe size={20} />
+                    <Globe size={20} onClick={()=>handleWebsiteClick(web)} />
                   </div>
                 </div>
 
@@ -78,8 +103,8 @@ const Dashbord = () => {
                   {web?.shopname || "Unnamed Store"}
                 </h3>
 
-                <div className="flex items-center text-gray-500 text-sm font-medium mt-4">
-                  Manage Store <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                <div onClick={()=>getanalytics(web)} className="flex items-center text-gray-500 text-sm font-medium mt-4">
+                  Manage Store <ArrowRight  size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             ))

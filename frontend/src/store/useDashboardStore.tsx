@@ -13,7 +13,13 @@ interface DashboardState {
   selectedWebsite: Website | null;
   analytics: any;
   loading: boolean;
+  orders:any,
+  products:any
   
+
+  setorders: (orders: any) => void;
+  setproducts: (products: any) => void;
+
   // Specific Setters
   setWebsites: (websites: Website[]) => void;
   setTotal: (total: number) => void;
@@ -29,6 +35,8 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   selectedWebsite: null,
   analytics: null,
   loading: true,
+  orders:null,
+  products:null,
 
   // Implementations
   setWebsites: (websites) => set({ websites }),
@@ -36,4 +44,6 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   setSelectedWebsite: (selectedWebsite) => set({ selectedWebsite }),
   setAnalytics: (analytics) => set({ analytics }),
   setLoading: (loading) => set({ loading }),
+  setorders:(orders)=> set({orders}),
+  setproducts:(products)=>set({products})
 }));
