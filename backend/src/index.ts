@@ -8,6 +8,8 @@ import {rateLimit} from 'express-rate-limit'
 import websiteRoutes from './routes/GenrateWebsiteRoutes'
 import dashbordroutes from './routes/DashboardRoutes'
 import cors,{CorsOptions} from 'cors'
+import sendemailroute from './routes/sendemail'
+
 DBconnection()
 
 const app:Application = express()
@@ -40,6 +42,7 @@ app.use(cors(corsOptions))
 app.use('/auth/user',userRoutes)
 app.use('/web',websiteRoutes)
 app.use('/data',dashbordroutes)
+app.use('/mail',sendemailroute)
 
 app.get("/",(req:Request,res:Response)=>{
     try {

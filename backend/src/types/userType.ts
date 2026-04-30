@@ -12,8 +12,8 @@ export interface Usertype extends Document {
         shopdescription: string,
         shoplogo: string,
 
-     myoders:[{name:string,phoneno:string,location:string,email:string,productid:string}],
-        
+        myoders: [{ name: string, phoneno: string, location: string, email: string, productid: string }],
+
 
         shopemail: string,
         shoplinks: [{ link: string }],
@@ -24,7 +24,7 @@ export interface Usertype extends Document {
         mapLocation: { type: String },
         shophomepageimg: string,
         shopProducts: [{
-
+            price: { type: Number, default: 0 },
             productname: string,
             quantity: number,
             productdescription: string,

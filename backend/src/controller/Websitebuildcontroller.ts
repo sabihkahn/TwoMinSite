@@ -13,8 +13,8 @@ interface Requestwithid extends Request {
 
 export const CreateWebsite = async (req: Requestwithid, res: Response) => {
   try {
+    
     const id = req.id?.id
-
 
     if (!id) {
       return res.status(401).send({ message: "Unauthorized: id not provided" });
@@ -68,7 +68,6 @@ export const CreateWebsite = async (req: Requestwithid, res: Response) => {
     return res.status(500).send({ message: "Internal server error" });
   }
 };
-
 
 export const getwebsite = async (req: Requestwithid, res: Response) => {
   try {
@@ -255,7 +254,6 @@ export const deleteproduct = async (req: Requestwithid, res: Response) => {
   }
 };
 
-
 export const updateproduct = async (req: Requestwithid, res: Response) => {
   try {
     const userId = req.id?.id; // from auth
@@ -435,10 +433,9 @@ export const updateTheme = async (req: Requestwithid, res: Response) => {
 
 }
 
-
 export const getproductsandorders = async (req: Requestwithid, res: Response) => {
   try {
-    const { webname } = req.params; 
+    const { webname } = req.params;
     const id = req.id?.id;
 
     const userdata = await Usermodel.findById(
@@ -453,12 +450,12 @@ export const getproductsandorders = async (req: Requestwithid, res: Response) =>
     }
 
     const productsarray = userdata.websitesbrands[0].shopProducts;
-     const ordersdata = userdata?.websitesbrands[0].myoders
+    const ordersdata = userdata?.websitesbrands[0].myoders
 
     res.status(200).send({
       message: "product fetched successfully",
       products: productsarray,
-      orders:ordersdata
+      orders: ordersdata
     });
 
   } catch (error) {
@@ -467,26 +464,24 @@ export const getproductsandorders = async (req: Requestwithid, res: Response) =>
   }
 };
 
+export const getproductorder = async (req: Requestwithid, res: Response) => {
+  try {
 
-// export const getOrders = async (req: Requestwithid, res: Response) => {
-//   try {
-//     const { webname } = req.params;
-//     const id = req.id?.id;
+    const id = req.id?.id
+    const { webname, productid } = req.params
+ 
+    const usermodel = await Usermodel.findById(id, {
+      websitesbrands: { $elemMatch: { shopname: webname } }
+    })
+    const productdata = usermodel?.websitesbrands[0].shopProducts.filter((e:any)=>{
+      return e._id == productid
+    })
+     
+    res.status(200).send({message:"product data fetched successfully",productdata})
     
+  } catch (error) {
+    logger.error("an error occur in getproductorder ==> ", error)
+  }
+}
 
-//     const userdata = await Usermodel.findById(
-//       id,
-//       {
-//         websitesbrands: { $elemMatch: { shopname: webname } }
-//       }
-//     );
 
-//     const ordersdata = userdata?.websitesbrands[0].myoders
-
-//     res.status(200).send({message:"get order successfully",ordersdata})
-
-//   } catch (error) {
-//     logger.error("an error occur in getOrders controller ", error)
-//     res.status(500).send({ message: "interenal server error" })
-//   }
-// }

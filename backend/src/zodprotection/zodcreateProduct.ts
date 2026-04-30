@@ -4,6 +4,9 @@ export const ProductSchema = z.object({
   productname: z
     .string()
     .min(1, "Product name is required"),
+  price: z
+    .number()
+    .min(1, "Product price is required"),
 
   quantity: z
     .number()

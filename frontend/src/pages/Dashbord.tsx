@@ -8,7 +8,7 @@ import { Globe, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 const Dashbord = () => {
-  const { setTotal,setAnalytics,analytics, setWebsites, websites, setLoading, loading } = useDashboardStore()
+  const { setTotal,setAnalytics,analytics, setWebsites, websites, setLoading, loading,selectedWebsite,setSelectedWebsite } = useDashboardStore()
   const navigate = useNavigate()
 
   const FetchWebsitesDashbord = useCallback(async () => {
@@ -37,6 +37,7 @@ const Dashbord = () => {
 
   async function getanalytics(web:any) {
         try {
+          setSelectedWebsite(web)
             const analytics1 = await apiClient.post('/data/websiteanalytics',{
               webname:web.shopname, 
               webid:web.shopid

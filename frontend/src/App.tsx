@@ -19,6 +19,8 @@ import Pricing from './pages/Pricing'
 import Feature from './pages/Feature'
 import CreateWebsite from './pages/CreateWebsite'
 import Managestore from './pages/Managestore'
+import AddProduct from './components/AddProduct'
+import ViewMyorder from './components/ViewMyorder'
 const App = () => {
 
   const { User, setUser, checkAuth, isCheckingAuth } = useAuthStore()
@@ -27,9 +29,9 @@ const App = () => {
     checkAuth()
   }, [])
 
-const location = useLocation();
+  const location = useLocation();
 
-const isDashboard = location.pathname.startsWith("/dashboard");
+  const isDashboard = location.pathname.startsWith("/dashboard");
   if (isCheckingAuth) {
     return <LoadingComponent />
   }
@@ -37,15 +39,18 @@ const isDashboard = location.pathname.startsWith("/dashboard");
 
   return (
     <>
-     {isDashboard?"":<Header />}
-      <div className={isDashboard?"pt-0":"pt-16"}>
+      {isDashboard ? "" : <Header />}
+      <div className={isDashboard ? "pt-0" : "pt-16"}>
         <Routes>
           {/* <Route path='/home' element={User?<Home />:<Navigate to="/login" />} /> */}
           <Route path='/aboutus' element={<About />} />
           <Route path='/pricing' element={<Pricing />} />
           <Route path='/features' element={<Feature />} />
-          <Route path='/dashboard/createwebsite' element={<CreateWebsite />} />
-          <Route path='/dashboard/managestore' element={<Managestore />} />
+          <Route path='/dashboard/createwebsite' element={User ? <CreateWebsite /> : <Navigate to="/login" />} />
+          <Route path='/dashboard/managestore' element={User ? <Managestore /> : <Navigate to="/login" />} />
+          <Route path='/dashboard/managestore/addproducts' element={User ? <AddProduct /> : <Navigate to="/login" />} />
+          {/* /dashboard/managestore/vieworder */}
+          <Route path='/dashboard/managestore/vieworder/:webname/:productid' element={User ? <ViewMyorder /> : <Navigate to="/login" />} />
 
           <Route path='/contactus' element={<Contactus />} />
           <Route path='/login' element={<Login />} />
@@ -57,7 +62,7 @@ const isDashboard = location.pathname.startsWith("/dashboard");
         </Routes>
         <Toaster position="top-right" />
       </div>
-   {isDashboard ?"":  <Footer />}
+      {isDashboard ? "" : <Footer />}
     </>
   )
 }

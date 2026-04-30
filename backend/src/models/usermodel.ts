@@ -6,6 +6,8 @@ import { string } from "zod";
 const productSchema = new Schema({
   productname: { type: String, required: true },
   quantity: { type: Number, default: 0 },
+  price: { type: Number, default: 0 },
+
   productdescription: { type: String },
   productmainphoto: { type: String },
   productextraphotos: [{ imagesproduct: String }],

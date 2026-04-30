@@ -153,6 +153,7 @@ if(brand.theme == "default"){
                     <div class="mt-8 flex justify-between items-start">
                         <div>
                             <h3 class="text-sm font-bold uppercase tracking-widest text-obsidian mb-1">${p.productname}</h3>
+                                                   <h3 class="text-lg font-bold uppercase tracking-widest text-obsidian mb-1"> Price :${p.price}</h3>
                             <p class="text-stone-400 text-[10px] italic">Curated Essentials</p>
                         </div>
                     </div>
@@ -487,6 +488,8 @@ else if (brand.theme === "forest") {
                     <div class="mt-6 md:mt-8 px-2">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="heading-font text-xl md:text-2xl">${p.productname}</h3>
+                                                        <h3 class="heading-font text-xl md:text-2xl">Price: ${p.price}</h3>
+
                             <span class="font-light text-sm">Qty: ${p.quantity}</span>
                         </div>
                         <p class="text-[10px] uppercase tracking-widest opacity-50">Premium Selection</p>
@@ -728,6 +731,8 @@ else if(brand.theme == "dark") {
                     </div>
                     <div class="mt-6">
                         <h3 class="text-xs font-bold uppercase tracking-widest text-white mb-2">${p.productname}</h3>
+                                                <h3 class="text-xs font-bold uppercase tracking-widest text-white mb-2">Price : ${p.price}</h3>
+
                         <p class="text-stone-600 text-[10px] uppercase tracking-tighter">Availability: ${p.quantity} Units</p>
                     </div>
                 </div>
@@ -969,7 +974,9 @@ else if(brand.theme == "greenwoods"){
                         </div>
                     </div>
                     <h3 class="text-[12px] font-semibold text-[#344E41] uppercase tracking-widest text-center">${p.productname}</h3>
-                </div>
+                                        <h3 class="text-[12px] font-semibold text-[#344E41] uppercase tracking-widest text-center">Price : ${p.price}</h3>
+
+                    </div>
             `).join('') : '<p class="col-span-full text-center italic opacity-40">Restocking our harvest...</p>'}
         </div>
     </main>
@@ -1245,6 +1252,8 @@ else if(brand.theme == "softglass") {
                     <div class="px-2">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="font-bold text-slate-800 text-lg">${p.productname}</h3>
+                                                      <h3 class="font-bold text-slate-800 text-lg">Price: ${p.price}</h3>
+
                             <span class="text-[#4FA3FF] font-bold">Details</span>
                         </div>
                         <p class="text-slate-400 text-xs uppercase tracking-widest font-semibold">Ready to Ship</p>
@@ -1642,6 +1651,8 @@ else if(brand.theme == "neonfuture") {
                         
                         <div class="absolute bottom-0 left-0 w-full p-6 z-20 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                             <h3 class="text-lg font-orbitron font-bold uppercase tracking-wide text-white mb-1 group-hover:text-cyber-cyan transition">${p.productname}</h3>
+                                                        <h3 class="text-lg font-orbitron font-bold uppercase tracking-wide text-white mb-1 group-hover:text-cyber-cyan transition">Price: ${p.price}</h3>
+
                             <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
                                 <span class="w-8 h-[1px] bg-cyber-pink"></span>
                                 <span class="text-cyber-pink text-[9px] font-orbitron uppercase tracking-widest">Access Data</span>
@@ -2063,6 +2074,8 @@ else if(brand.theme == "darkblue"){
                     <div class="mt-6 px-2 flex justify-between items-start">
                         <div>
                             <h3 class="text-sm font-bold uppercase tracking-widest text-white font-orbitron mb-1">${p.productname}</h3>
+                                                        <h3 class="text-sm font-bold uppercase tracking-widest text-white font-orbitron mb-1">Price : ${p.price}</h3>
+
                             <p class="text-[#60A5FA] text-[11px]">Hardware / Eq.</p>
                         </div>
                     </div>
@@ -2369,6 +2382,8 @@ else if(brand.theme == "gothic"){
                         </div>
                     </div>
                     <h3 class="cinzel text-lg tracking-widest uppercase mb-2">${p.productname}</h3>
+                                        <h3 class="cinzel text-lg tracking-widest uppercase mb-2">Price : ${p.price}</h3>
+
                     <p class="gold-text cinzel text-sm opacity-80 tracking-widest">$${p.productprice || 'Price on Request'}</p>
                 </div>
             `).join('')}
