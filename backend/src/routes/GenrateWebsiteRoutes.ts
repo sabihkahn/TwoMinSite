@@ -1,16 +1,17 @@
 import express, { Router } from 'express'
 import { Authorization } from '../middleware/Authorization'
 import { addProduct, addreview, CreateWebsite, deleteproduct, deletewebsite, getproductorder, getproductsandorders, getwebsite, purchaseproduct, updateproduct, updateTheme, updatewebsite } from '../controller/Websitebuildcontroller'
-
+import { checkcando } from '../middleware/Checkcanupload'
+import {checkcanuploadproduct} from '../middleware/checkCanuploadproduct'
 
 const router: Router = express.Router()
 
 
-router.post('/createWebsite',Authorization,CreateWebsite)
+router.post('/createWebsite',Authorization,checkcando,CreateWebsite)
  
 router.get('/mywebsite/:webname',getwebsite)
 
-router.post('/createproduct',Authorization,addProduct)
+router.post('/createproduct',Authorization,checkcanuploadproduct,addProduct)
  
 router.post('/purchaseprodut',purchaseproduct)
 

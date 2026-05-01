@@ -6,7 +6,7 @@ const Pricing = () => {
   const plans = [
     {
       name: "Starter",
-      price: "250",
+      price: "500",
       desc: "Perfect for small shops just getting started.",
       features: ["Upload up to 20 products", "Full access to store tools", "Basic product management", "Mobile-ready storefront", "Standard support"],
       icon: <Zap size={24} />,
@@ -14,7 +14,7 @@ const Pricing = () => {
     },
     {
       name: "Growth",
-      price: "300",
+      price: "1000",
       desc: "Best for growing businesses with a wider catalog.",
       features: ["Upload up to 50 products", "Everything in Starter", "Enhanced product management", "Faster updates & performance", "Priority support"],
       icon: <Rocket size={24} />,
@@ -23,7 +23,7 @@ const Pricing = () => {
     },
     {
       name: "Pro",
-      price: "500",
+      price: "1500",
       desc: "Built for serious sellers and expanding brands.",
       features: ["Upload up to 100 products", "Everything in Growth", "Large catalog support", "Optimized performance", "Priority assistance"],
       icon: <ShieldCheck size={24} />,

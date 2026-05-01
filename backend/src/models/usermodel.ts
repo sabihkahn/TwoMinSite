@@ -16,6 +16,7 @@ const productSchema = new Schema({
 
 // 2. Nested Website Schema
 const websiteSchema = new Schema({
+  maximumprodcts:{type:Number,default:3},
   theme: { type: String, default: "default" },
   shopname: { type: String, required: true },
   shopdescription: { type: String },
@@ -38,6 +39,7 @@ const websiteSchema = new Schema({
 const userSchema = new Schema<Usertype>(
   {
     name: { type: String, required: true },
+    maximumWebsites:{type:Number,default:3},
     email: { 
       type: String, 
       required: true, 

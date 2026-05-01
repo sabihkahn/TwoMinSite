@@ -5,13 +5,14 @@ export interface Usertype extends Document {
 
     name: string,
     email: string,
+    maximumWebsites:number,
     password: string,
     websitesbrands: [{
         theme: string,
         shopname: string,
         shopdescription: string,
         shoplogo: string,
-
+        maximumprodcts:number,
         myoders: [{ name: string, phoneno: string, location: string, email: string, productid: string }],
 
 

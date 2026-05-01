@@ -33,7 +33,7 @@ export const CreateWebsite = async (req: Requestwithid, res: Response) => {
       .replace(/\s+/g, ' ');
 
     if (!/^[a-z]+$/.test(shopname)) {
-      return res.status(400).send({ message: "Invalid shopname it just contain alphabets" });
+      return res.status(400).send({ message: "Invalid shopname it just contain alphabets and no spaces" });
     }
 
 

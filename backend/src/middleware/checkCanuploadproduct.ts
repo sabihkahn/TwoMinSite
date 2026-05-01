@@ -11,28 +11,32 @@ interface Authrequenst extends Request {
 }
 
 
-export const checkcando = async (req: Authrequenst, res: Response, next: NextFunction) => {
+export const checkcanuploadproduct = async (req: Authrequenst, res: Response, next: NextFunction) => {
     try {
-        const userId = req.id?.id; // assuming req.id is already the ID
+        const userId = req.id?.id; 
+        const {webname, webid} = req.body
 
         if (!userId) {
             return res.status(401).send({ message: "Unauthorized" });
         }
 
-        const user = await User.findById(userId);
+        const user = await User.findById({_id:userId},{
+            websitesbrands:{$elemMatch:{shopname:webname}}
+        });
+
 
         if (!user) {
             return res.status(404).send({ message: "User not found" });
         }
 
-        const websiteCount = user.websitesbrands?.length || 0;
-        const maxWebsites = user.maximumWebsites || 0;
 
-        if (websiteCount >= maxWebsites) {
-            return res.status(400).send({
-                message: "Contact us to add more websites"
-            });
+        const maxproducts = user.websitesbrands[0].maximumprodcts || 0
+        const producttoal = user.websitesbrands[0].shopProducts.length || 0
+         
+        if(producttoal >= maxproducts){
+            return res.status(400).send({message:"contact us to add more products"})
         }
+
 
         next();
 
