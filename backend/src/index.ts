@@ -54,8 +54,8 @@ app.get("/",(req:Request,res:Response)=>{
     }
 })
 
-const PORT:Number = 5000
+const PORT = 5000
 
-app.listen(PORT,()=>{
-    logger.info("Server started on http://localhost:5000")
-})
+app.listen(Number(PORT), "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+});
