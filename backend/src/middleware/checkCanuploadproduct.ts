@@ -34,9 +34,9 @@ export const checkcanuploadproduct = async (req: Authrequenst, res: Response, ne
         const producttoal = user.websitesbrands[0].shopProducts.length || 0
          
         if(producttoal >= maxproducts){
-            return res.status(400).send({message:"contact us to add more products"})
+            return res.status(400).send({message:"Dear user please upgrade your plan by messaging us on whatsapp to add more products"})
         }
-
+        
 
         next();
 

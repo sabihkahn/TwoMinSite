@@ -6,7 +6,7 @@ const Pricing = () => {
   const plans = [
     {
       name: "Starter",
-      price: "500",
+      price: "500pkr | 2$",
       desc: "Perfect for small shops just getting started.",
       features: ["Upload up to 20 products", "Full access to store tools", "Basic product management", "Mobile-ready storefront", "Standard support"],
       icon: <Zap size={24} />,
@@ -14,7 +14,7 @@ const Pricing = () => {
     },
     {
       name: "Growth",
-      price: "1000",
+      price: "1000pkr | 4$",
       desc: "Best for growing businesses with a wider catalog.",
       features: ["Upload up to 50 products", "Everything in Starter", "Enhanced product management", "Faster updates & performance", "Priority support"],
       icon: <Rocket size={24} />,
@@ -23,7 +23,7 @@ const Pricing = () => {
     },
     {
       name: "Pro",
-      price: "1500",
+      price: "1500pkr | 5$",
       desc: "Built for serious sellers and expanding brands.",
       features: ["Upload up to 100 products", "Everything in Growth", "Large catalog support", "Optimized performance", "Priority assistance"],
       icon: <ShieldCheck size={24} />,
@@ -69,7 +69,7 @@ const Pricing = () => {
               
               <div className="flex items-baseline gap-1 mb-8">
                 <span className="text-sm font-black text-zinc-500 uppercase">PKR</span>
-                <span className="text-5xl font-black">{plan.price}</span>
+                <span className="text-2xl font-black">{plan.price}</span>
                 <span className="text-zinc-500 font-bold">/mo</span>
               </div>
 
@@ -104,7 +104,7 @@ const Pricing = () => {
                 <div className="flex items-center gap-4 p-4 bg-zinc-950 rounded-2xl border border-zinc-800">
                   <CreditCard className="text-yellow-400" />
                   <div>
-                    <p className="text-[10px] font-black uppercase text-zinc-500">JazzCash Account</p>
+                    <p className="text-[10px] font-black uppercase text-zinc-500">Pioneer | JazzCash Account | any bank</p>
                     <p className="font-bold text-lg">03006354512</p>
                   </div>
                 </div>

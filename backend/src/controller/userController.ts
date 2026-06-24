@@ -40,12 +40,12 @@ export const register = async (req: Request, res: Response) => {
 
         res.cookie("jwt", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-            sameSite: "strict",
+            secure:true, // Only send over HTTPS in production
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000 // 1 day
         })
 
-        return res.status(201).send({ message: "User created successfully"});
+        return res.status(201).send({ message: "User created successfully",token:token});
 
     } catch (error) {
         logger.error("An error occurred in usercontroller while register", error);
@@ -92,14 +92,15 @@ export const login = async (req: Request, res: Response) => {
 
         res.cookie("jwt", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-            sameSite: "strict",
+            secure: true, // Only send over HTTPS in production
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000 // 1 day
         });
 
         // 6. Success Response
         return res.status(200).send({
             message: "Login successful",
+            token:token
         });
 
     } catch (error) {
@@ -157,7 +158,7 @@ try {
 
       
      const hash = await Bcrypt.hash(password,10)
-     user.password = password
+     user.password = hash
      user.name = name
      await user.save()
   

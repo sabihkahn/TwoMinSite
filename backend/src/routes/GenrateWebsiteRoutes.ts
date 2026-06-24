@@ -3,13 +3,13 @@ import { Authorization } from '../middleware/Authorization'
 import { addProduct, addreview, CreateWebsite, deleteproduct, deletewebsite, getproductorder, getproductsandorders, getwebsite, purchaseproduct, updateproduct, updateTheme, updatewebsite } from '../controller/Websitebuildcontroller'
 import { checkcando } from '../middleware/Checkcanupload'
 import {checkcanuploadproduct} from '../middleware/checkCanuploadproduct'
-
+import { canaccesswebsite } from '../middleware/cangetwebsite'
 const router: Router = express.Router()
 
 
 router.post('/createWebsite',Authorization,checkcando,CreateWebsite)
  
-router.get('/mywebsite/:webname',getwebsite)
+router.get('/mywebsite/:webname',canaccesswebsite,getwebsite)
 
 router.post('/createproduct',Authorization,checkcanuploadproduct,addProduct)
  
@@ -32,5 +32,7 @@ router.delete('/deletewebsite/:webname',Authorization,deletewebsite)
 router.put('/updatewebsite/:webname',Authorization,updatewebsite)
 
 router.put('/updatetheme',Authorization,updateTheme)
+
+
 
 export default router

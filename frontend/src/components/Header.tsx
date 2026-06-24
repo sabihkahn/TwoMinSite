@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuthStore } from "../store/useAuthStore";
 import apiClient from "../api/axiosapiinstance";
 import toast from "react-hot-toast";
+import Logo from '../assets/logo2.png'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,8 +72,8 @@ const Header = () => {
 
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="bg-white p-1.5 rounded-md group-hover:bg-yellow-400 transition-colors">
-              <Command size={18} className="text-black" />
+            <div className="bg-white p-[2px] rounded-md group-hover:bg-yellow-400 transition-colors">
+              <img src={Logo} alt="" className="w-8"/>
             </div>
             <span className="text-white font-semibold tracking-tight text-lg">
               TwoMin<span className="text-gray-500 font-medium">Web</span>
@@ -149,9 +150,9 @@ const Header = () => {
             animate={{ opacity: 1, height: "100vh" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 top-[100px] bg-black z-[-1] md:hidden px-6 overflow-hidden"
+            className="fixed inset-0 top-[100px] bg-black z-[-1] md:hidden px-6 overflow-x-hidden overflow-y-scroll"
           >
-            <div className="flex flex-col gap-1 py-8 h-full">
+            <div className="flex flex-col gap-1 py-8 h-full overflow-y-scroll">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -162,7 +163,7 @@ const Header = () => {
                   <ChevronRight size={20} className="text-gray-600 group-hover:text-yellow-400" />
                 </Link>
               ))}
-              <div className="mt-8 flex flex-col gap-4">
+              <div className="mt-8 flex flex-col gap-4 max-h-full overflow-y-auto pb-16">
                 {!User ? (
                   <>
                     <Link to="/register" className="w-full bg-white text-black text-center py-4 rounded-xl font-bold">
@@ -176,7 +177,7 @@ const Header = () => {
                   <> <Link to="/dashboard" className="w-full bg-white text-black text-center py-4 rounded-xl font-bold">
                       Go to Dashboard
                      </Link>
-                        <button
+                  <button
                   onClick={handleLogout}
                   className="w-full bg-white text-black text-center py-4 rounded-xl font-bold"
                 >

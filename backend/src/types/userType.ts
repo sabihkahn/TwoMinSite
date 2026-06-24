@@ -1,43 +1,51 @@
 import { Document } from "mongoose";
 
-
 export interface Usertype extends Document {
+  name: string;
+  email: string;
+  maximumWebsites: number;
+  password: string;
+  websitesbrands: [
+    {
+      theme: string;
+      shopname: string;
+      shopdescription: string;
+      shoplogo: string;
+      maximumprodcts: number;
+      myoders: [
+        {
+          name: string;
+          phoneno: string;
+          location: string;
+          email: string;
+          productid: string;
+        },
+      ];
 
-    name: string,
-    email: string,
-    maximumWebsites:number,
-    password: string,
-    websitesbrands: [{
-        theme: string,
-        shopname: string,
-        shopdescription: string,
-        shoplogo: string,
-        maximumprodcts:number,
-        myoders: [{ name: string, phoneno: string, location: string, email: string, productid: string }],
+      subscriptionplan: "free" | "Starter" | "Growth" | "Pro"; //  Pure TS string literal types
+      paymentdate?: Date; //
 
-
-        shopemail: string,
-        shoplinks: [{ link: string }],
-        shopadress: string,
-        phone: { type: String },
-        city: { type: String },
-        country: { type: String },
-        mapLocation: { type: String },
-        shophomepageimg: string,
-        shopProducts: [{
-            price: { type: Number, default: 0 },
-            productname: string,
-            quantity: number,
-            productdescription: string,
-            productmainphoto: string,
-            productextraphotos: [{ imagesproduct: string }],
-            reviews: [{ name: string, message: string }],
-
-
-        }]
-
-    }],
-    createdAt: Date;
-    updatedAt: Date;
-
+      shopemail: string;
+      shoplinks: [{ link: string }];
+      shopadress: string;
+      phone: { type: String };
+      city: { type: String };
+      country: { type: String };
+      mapLocation: { type: String };
+      shophomepageimg: string;
+      shopProducts: [
+        {
+          price: { type: Number; default: 0 };
+          productname: string;
+          quantity: number;
+          productdescription: string;
+          productmainphoto: string;
+          productextraphotos: [{ imagesproduct: string }];
+          reviews: [{ name: string; message: string }];
+        },
+      ];
+    },
+  ];
+  createdAt: Date;
+  updatedAt: Date;
 }

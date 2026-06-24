@@ -1,4 +1,4 @@
- import { Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { Usertype } from "../types/userType"; // Import your interface
 import { string } from "zod";
 
@@ -7,7 +7,6 @@ const productSchema = new Schema({
   productname: { type: String, required: true },
   quantity: { type: Number, default: 0 },
   price: { type: Number, default: 0 },
-
   productdescription: { type: String },
   productmainphoto: { type: String },
   productextraphotos: [{ imagesproduct: String }],
@@ -16,12 +15,26 @@ const productSchema = new Schema({
 
 // 2. Nested Website Schema
 const websiteSchema = new Schema({
-  maximumprodcts:{type:Number,default:3},
+  subscriptionplan: {
+    type: String,
+    // enum: ["free", "Starter", "Growth", "Pro"],
+    default: "free",
+  },
+  paymentdate: { type: Date },
+  maximumprodcts: { type: Number, default: 3 },
   theme: { type: String, default: "default" },
   shopname: { type: String, required: true },
   shopdescription: { type: String },
   shoplogo: { type: String },
-  myoders:[{name:string,phoneno:string,location:string,email:string,productid:string}],
+  myoders: [
+    {
+      name: string,
+      phoneno: string,
+      location: string,
+      email: string,
+      productid: string,
+    },
+  ],
   shopemail: { type: String },
   shoplinks: [{ link: String }],
   shopadress: { type: String },
@@ -30,7 +43,7 @@ const websiteSchema = new Schema({
   city: { type: String },
   country: { type: String },
   mapLocation: { type: String },
-  
+
   shophomepageimg: { type: String },
   shopProducts: [productSchema], // Reference the product schema
 });
@@ -39,19 +52,19 @@ const websiteSchema = new Schema({
 const userSchema = new Schema<Usertype>(
   {
     name: { type: String, required: true },
-    maximumWebsites:{type:Number,default:3},
-    email: { 
-      type: String, 
-      required: true, 
-      unique: true, 
-      lowercase: true 
+    maximumWebsites: { type: Number, default: 3 },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
     },
     password: { type: String, required: true, select: false },
-    websitesbrands: [websiteSchema], 
+    websitesbrands: [websiteSchema],
   },
-  { 
-    timestamps: true // This automatically handles createdAt and updatedAt
-  }
+  {
+    timestamps: true, // This automatically handles createdAt and updatedAt
+  },
 );
 
 // 4. Create and Export Model
