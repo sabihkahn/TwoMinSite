@@ -37,7 +37,7 @@ const About = () => {
             </div>
             
             <h2 className="text-3xl font-black uppercase tracking-tight mb-2">Sabih ur Rehman khan</h2>
-            <p className="text-yellow-400 font-bold uppercase tracking-widest text-xs mb-6">   Software Developer</p>
+            <p className="text-yellow-400 font-bold uppercase tracking-widest text-xs mb-6">Software Developer</p>
             
             <div className="space-y-4 mb-8">
               <div className="flex items-center gap-4 text-zinc-400">
